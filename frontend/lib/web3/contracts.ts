@@ -1,0 +1,80 @@
+export const PAYCHAIN_ABI = [
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [{ type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalDeposited",
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ type: "address" }, { type: "string" }],
+    name: "registerEmployee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "deposit",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ type: "address" }, { type: "uint256" }],
+    name: "recordSalary",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ type: "uint256" }],
+    name: "salaryRecords",
+    outputs: [
+      { type: "uint256" },
+      { type: "address" },
+      { type: "uint256" },
+      { type: "uint256" },
+      { type: "bool" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, type: "address", name: "employee" },
+      { type: "string", name: "name" },
+    ],
+    name: "EmployeeRegistered",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, type: "address", name: "from" },
+      { type: "uint256", name: "amount" },
+      { type: "uint256", name: "totalBalance" },
+    ],
+    name: "SalaryDeposited",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, type: "uint256", name: "salaryId" },
+      { indexed: true, type: "address", name: "employee" },
+      { type: "uint256", name: "amount" },
+      { type: "uint256", name: "timestamp" },
+    ],
+    name: "SalaryDisbursed",
+    type: "event",
+  },
+] as const;

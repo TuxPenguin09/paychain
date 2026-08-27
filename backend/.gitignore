@@ -37,3 +37,6 @@ uploads/
 
 .DS_Store
 Thumbs.db
+
+services/models/*.joblib
+training/data/*.csv

@@ -1,57 +1,51 @@
-# Sample Hardhat 3 Project (`mocha` and `ethers`)
+# PayChain Smart Contracts
 
-This project showcases a Hardhat 3 project using `mocha` for tests and the `ethers` library for Ethereum interactions.
-
-To learn more about Hardhat 3, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3](https://hardhat.org/hardhat3-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+Salary disbursement platform for Filipino *kasambahay* (domestic workers), built with Hardhat 3 on **Polygon Amoy testnet**.
 
 ## Project Overview
 
-This example project includes:
-
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+- **PayChain.sol** — Core contract for salary management: employer registers employees, deposits MATIC, and records salary disbursements.
+- **MockERC20.sol** — Simple ERC-20 mock for future stablecoin integration.
+- Solidity 0.8.28 with Foundry-compatible unit tests and TypeScript integration tests.
 
 ## Usage
 
 ### Running Tests
 
-To run all the tests in the project, execute the following command:
-
 ```shell
 npx hardhat test
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+Selectively run Solidity or Mocha tests:
 
 ```shell
 npx hardhat test solidity
 npx hardhat test mocha
 ```
 
-### Make a deployment to Sepolia
-
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
-
-To run the deployment to a local chain:
+### Typecheck
 
 ```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
+npx hardhat build && npx tsc --noEmit
 ```
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+### Deploy to Polygon Amoy
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
+Set environment variables:
 
 ```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
+export POLYGON_AMOY_RPC_URL=https://polygon-amoy-bor-rpc.publicnode.com
+export POLYGON_AMOY_PRIVATE_KEY=<your-deployer-private-key>
 ```
 
-After setting the variable, you can run the deployment with the Sepolia network:
+Deploy with Ignition:
 
 ```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
+npx hardhat ignition deploy ignition/modules/PayChain.ts --network polygonAmoy
+```
+
+### Deploy locally
+
+```shell
+npx hardhat ignition deploy ignition/modules/PayChain.ts
 ```

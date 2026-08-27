@@ -1,50 +1,89 @@
-# Welcome to your Expo app 👋
+# PayChain Frontend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native (Expo SDK 54) frontend for the PayChain salary disbursement platform, targeting Filipino *kasambahay* on **Polygon Amoy testnet**. Supports **iOS, Android, and Web** from a single codebase.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Setup
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Run on Web
 
-## Learn more
+```bash
+npx expo start --web
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Opens in browser at `http://localhost:8081`. MetaMask extension required for wallet connection.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Run on Native
 
-## Join the community
+```bash
+npx expo start --android
+npx expo start --ios
+```
 
-Join our community of developers creating universal apps.
+> Wallet connection is currently web-only (MetaMask). Native apps show a message to use the web version.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Web3 Dependencies
+
+Install Web3 packages (run from Windows due to WSL limitations):
+
+```bash
+npm install ethers expo-secure-store
+```
+
+### Environment Variables
+
+Create a `.env` file or set in `app.json` under `expo.extra`:
+
+```
+EXPO_PUBLIC_PAYCHAIN_CONTRACT_ADDRESS=your-deployed-contract-address
+```
+
+## Platform Support
+
+| Feature | Web | iOS | Android |
+|---------|-----|-----|---------|
+| App shell + navigation | ✅ | ✅ | ✅ |
+| Home screen | ✅ | ✅ | ✅ |
+| Explore screen | ✅ | ✅ | ✅ |
+| Wallet connection | ✅ MetaMask | ⚠️ Web only | ⚠️ Web only |
+| LocalStorage persistence | ✅ | N/A | N/A |
+| SecureStore persistence | N/A | ✅ | ✅ |
+
+## Structure
+
+```
+frontend/
+├── app/
+│   ├── _layout.tsx          Root layout (Web3Provider wrapper)
+│   ├── modal.tsx            Modal screen
+│   └── (tabs)/
+│       ├── _layout.tsx      Tab navigator (Home, Explore, Wallet)
+│       ├── index.tsx        Home screen
+│       ├── explore.tsx      Explore screen
+│       └── wallet.tsx       Wallet connection screen (platform-aware)
+├── lib/
+│   └── web3/
+│       ├── config.ts        Polygon Amoy chain config
+│       ├── provider.tsx     Wallet context (localStorage on web, SecureStore on native)
+│       └── contracts.ts     PayChain ABI
+└── components/              Shared UI components
+```
+
+## Web3 Integration
+
+- **ethers.js v6** — Wallet and contract interaction
+- **Platform-aware storage** — `localStorage` on web, `expo-secure-store` on native
+- **WalletContext** — React context providing `address`, `provider`, `signer`, `contract`, `connectWallet()`, `disconnectWallet()`, `error`
+- **MetaMask events** — Listens for `accountsChanged` and `chainChanged` to auto-disconnect
+
+The `useWallet()` hook provides all wallet state and actions.
+
+## Network
+
+- **Polygon Amoy Testnet** (Chain ID: 80002)
+- RPC: `https://polygon-amoy-bor-rpc.publicnode.com`
+- Explorer: `https://amoy.polygonscan.com`

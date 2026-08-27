@@ -28,11 +28,11 @@ export default defineConfig({
       type: "edr-simulated",
       chainType: "op",
     },
-    sepolia: {
+    polygonAmoy: {
       type: "http",
       chainType: "l1",
-      url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
+      url: configVariable("POLYGON_AMOY_RPC_URL"),
+      accounts: [configVariable("POLYGON_AMOY_PRIVATE_KEY")],
     },
   },
 });
